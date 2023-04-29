@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>My Ordinal Inscripion Project</title>
+</head>
+
+<body>
+    <h1>Claim your NFT!</h1>
+
+    <!-- A container to show the last update time -->
+    <div><span>Last update: </span><span id="time-container"></span></div>
+    <div>
+        <!-- A label and an input field to enter BTC address -->
+        <label for="data-input">Enter the BTC Address where you want to receive your Ordinal Inscripion</label>
+        <input type="text" id="data-input">
+        <!-- A button to send the BTC address and get a unique deposit address -->
+        <button onclick="sendRecipientAddress(); ">Click to get your Ordinal!</button>
+    </div>
+
+    <div>
+
+        <div id="result-container"></div>
+
+        <!-- Receive your Ordinal Inscripion here: -->
+        <div id="sent-data-container"></div>
+
+        It will be confirmed in a minimum of 3 blocks (1 for deposit, 1 for inscription, 1 for sending).
+    </div>
+
+    <div>
+
+        ~Status~
+        <div id="update-container"></div>
+
+    </div>
+
+    <hr>
+
+    <script>
+        // This function sends a POST request to a server to get a deposit address
+        function sendRecipientAddress() {
+            // Get the value of an input field with an ID 'data-input'
+            const dataToSend = document.getElementById('data-input').value;
+            console.log("Received valid BTC address for receiving:");
+            console.log(dataToSend);
+            // Send a POST request to the specified URL with headers and a body
+            fetch("http://<serverip>/get_deposit_address", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ "data": dataToSend })
+            })
+                // When the response is received, convert it to JSON format
+                .then(response => response.json())
+                // Once the response is converted.. log and print it
+                .then(data => {
+                    console.log("BTC deposit info provided by server:");
+                    console.log(data);
+
+                    // Prepare the HTML for displaying the result
+                    dataDiv = document.getElementById('sent-data-container');
+
+                    //if (data.success) {
+                    // Display the returned btc deposit-address
+                    dataDiv.innerHTML = "To receive your inscrition, depoist your 0.0001 BTC here: " + data.address;
+                    //} else {
+                    //dataDiv.innerHTML = "Error-success: " + data.address;
+                    //}
+                })
+                .catch(error => {
+                    console.error(error);
+                    dataDiv = document.getElementById('sent-data-container');
+                    dataDiv.innerHTML = "Error: " + error;
+                });
+
+            getDate();
+        }
+
+        // A function to update the last update time on the web page
+        function getDate() {
+            date = new Date().toString();
+            document.getElementById('time-container').textContent
+                = date;
+        }
+
+        // Call getDate function to update the last update time on the web page
+        (function () {
+            getDate();
+        })();
+
+
+
+        function getUpdate() {
+            // Make the GET request using fetch()
+            fetch('http://<serverip>/get_update')
+                .then(response => response.json())
+                .then(data => {
+                    // Handle the response data here
+                    console.log(data);
+                })
+                .catch(error => {
+                    // Handle any errors here
+                    console.error(error);
+                });
+        }
+
+
+    </script>
+</body>
+
+</html>
