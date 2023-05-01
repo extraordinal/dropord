@@ -1,27 +1,37 @@
-# dropord
-A btc ordinal inscription "project" platform
+# dropord (name is work in progress)
 
-One-click deploy project for a user-mints (and pays) ordinal inscription collection. Inspiration from these https://bitglyphs.com/#/mint (the service, not the art, but that is cool too).
+A btc ordinal inscription "project" platform.
+
+One-click deploy for an on-demand-minting experience. 
+
+Inspiration from https://bitglyphs.com/ (the service, not the art, but that is cool too). Or something like the Candy Machine contract on Sol.
 
 # Features
 
-User provides their own recipient address.
-If user leaves website and doesn't make deposit, 30? Mins, address is returned to pool.
-If user makes deposit, address is removed from pool.
-deposit is checked for appropriate amount.
-once confirmed inscription generated
-once inscribed inscription is sent!
+* Nice website for an ordinal inscription collection.
+* User can buy an inscription.
+* User provides their own recipient address and sends some btc (or any currency?)
+* Magic tubes run in the background checking the funds, inscribing, and sending.
+
 
 ## Front end.
-Gallery of collection
-Gallery of minted.
-Gallery of to-be-minted.
-Click to mint button
+
+* Gallery of collection
+* Gallery of minted.
+* Gallery of to-be-minted.
+* Click to mint button
+* Click to check status
 
 ## Backend
-Full bitcoin node
-Ord index server
-flask server listening for transactions.
+
+* Full bitcoin node (bitcoin-core)
+* Ord index server
+* Flask server listening and managing transactions.
+* Webserver hosting frontend
+
+## Bonus
+
+With the same kind of hacky bash scripts tying the backend together, this can be configured to act as a general inscription service or an escrow sale service.
 
 
 # Machine setup
@@ -73,7 +83,7 @@ After=network.target
 [Service]
 User=ubuntu
 Group=www-data
-WorkingDirectory=/home/ubuntu/thefirst10k/flaskserver
+WorkingDirectory=/home/ubuntu/dropord/flaskserver
 ExecStart=/usr/bin/gunicorn -b 0.0.0.0:8000 --workers 3 app:app 
 Restart=always
 
@@ -132,7 +142,7 @@ sudo systemctl start nginx
 sudo systemctl enable nginx
 ```
 
-# Bitcoin service (running bitcoin core as a service):
+# Bitcoin service:
 ```
 sudo nano /etc/systemd/system/bitcoind.service
 
@@ -158,11 +168,5 @@ sudo systemctl start bitcoind.service
 journalctl -u bitcoind.service
 ```
 
-
-# Make a file with inscription ids 
-
-User clicks "buy-now" and a depoist address is generated. The deposit address is attached to the inscription and the receiver address.
-The deposit address is watched for a broadcast transaction.
-They then have until 3? blocks to make a depoist.
 
 
