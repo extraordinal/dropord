@@ -1,7 +1,7 @@
 # dropord
-A btc ordinal inscription drop platform
+A btc ordinal inscription "project" platform
 
-One-click deploy project for a user-mints (and pays) ordinal inscription collection.
+One-click deploy project for a user-mints (and pays) ordinal inscription collection. Inspiration from these https://bitglyphs.com/#/mint (the service, not the art, but that is cool too).
 
 # Features
 
