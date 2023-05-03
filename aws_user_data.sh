@@ -10,7 +10,7 @@ echo signet=1 >> /data/siget/bitcoin.conf
 # bitcoind -datadir=/home/ubuntu/signet # Not needed as running as service
 
 # Install ord
-curl --proto '=https' --tlsv1.2 -fsLS https://ordinals.com/install.sh | bash -s --to /usr/bin
+curl --proto '=https' --tlsv1.2 -fsLS https://ordinals.com/install.sh | bash -s -- --to /usr/bin
 echo "export PATH=$PATH:/bitcoin-24.0.1/bin" >> /etc/environment
 # mv -v /root/bin/ord /usr/bin/ord
 ln -s /bitcoin-24.0.1/bin/bitcoind /usr/bin/bitcoind
