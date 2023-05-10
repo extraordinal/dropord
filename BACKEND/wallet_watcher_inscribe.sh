@@ -7,7 +7,7 @@ deposit_address=$1
 receive_address=$2
 
 amount="0.00001"
-FEE=10.0
+FEE=10.0 #Get with `bitcoin-cli estimatefee 1`
 
 date
 echo "Watching deposit-address: $deposit_address for $amount and sending to $receive_address"
@@ -16,7 +16,7 @@ completerun=0
 
 while [ $completerun -eq 0 ]; do
   # Check the balance of the Bitcoin deposit-address
-  balance=$(bitcoin-cli -datadir=/home/ubuntu/signet getreceivedbyaddress $deposit_address)
+  balance=$(bitcoin-cli getreceivedbyaddress $deposit_address)
 
   # Check if the balance is greater than or equal to the required amount
   if (( $(echo "$balance >= $amount" | bc -l) )); then
@@ -32,7 +32,7 @@ while [ $completerun -eq 0 ]; do
     fi
 
     # Inscribe the file!
-    TRANSACTION_INSCRIPTION=$(ord --signet --cookie-file /home/ubuntu/signet/signet/.cookie wallet inscribe data/INSCRIBED/${NAME} --fee-rate $FEE --destination $receive_address)
+    TRANSACTION_INSCRIPTION=$(ord --signet wallet inscribe data/INSCRIBED/${NAME} --fee-rate $FEE --destination $receive_address)
     # Output looks like this:
     # { "commit": "bae9ada5b4d7546fa1a2498fbaa3b594194a8d1a71777fd6912c3574f3836297", "inscription": "5dcb18edeea855b3f06714dd05c551e99e8fff7fbc0e71f2a08483102b648b8ei0", "reveal": "5dcb18edeea855b3f06714dd05c551e99e8fff7fbc0e71f2a08483102b648b8e", "fees": 1168 }
 

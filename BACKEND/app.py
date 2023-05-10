@@ -64,6 +64,9 @@ def signal_handler(sig, frame):
     # Exit the script with a status code of 0
     sys.exit(0)
 
+'''
+Helper function to open a file a convert to a python dictionary
+'''
 def create_dict_from_file(filename):
     # Check if the file is empty
     if os.stat(filename).st_size == 0:
@@ -90,8 +93,8 @@ def create_dict_from_file(filename):
 
     
 '''
-Method to handle buying/inscribing/sending inscriptions!
-
+Method to handle buying/inscribing/sending inscriptions in a "lazy" way.
+No inscription number (i.e sequential file names in a collection) is specified.
 '''
 @app.route('/post_inscribe', methods=['POST'])
 def post_inscribe():
@@ -232,7 +235,7 @@ def get_image(image_id):
 
 
 '''
-Method to handle sending inscriptions (as an escrow service).
+Method to handle sending inscriptions (could be as an escrow service).
 Pulls a deposit-address from the premade list of addresses.
 Gives a user one of these addresses semi-permently attached to their 
 provided receiver-address.

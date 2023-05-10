@@ -7,12 +7,10 @@ tar -xzvf bitcoin-24.0.1-x86_64-linux-gnu.tar.gz
 mkdir /data
 mkdir /data/signet
 echo signet=1 >> /data/siget/bitcoin.conf
-# bitcoind -datadir=/home/ubuntu/signet # Not needed as running as service
 
 # Install ord
 curl --proto '=https' --tlsv1.2 -fsLS https://ordinals.com/install.sh | bash -s -- --to /usr/bin
 echo "export PATH=$PATH:/bitcoin-24.0.1/bin" >> /etc/environment
-# mv -v /root/bin/ord /usr/bin/ord
 ln -s /bitcoin-24.0.1/bin/bitcoind /usr/bin/bitcoind
 ln -s /bitcoin-24.0.1/bin/bitcoin-cli /usr/bin/bitcoin-cli
 
@@ -31,8 +29,8 @@ Description=Gunicorn instance for running flask server
 After=network.target
 
 [Service]
-User=ubuntu
-Group=www-data
+User=root
+Group=root
 WorkingDirectory=/data/dropord/BACKEND
 ExecStart=/usr/bin/gunicorn -b 0.0.0.0:8000 --workers 3 app:app 
 Restart=always

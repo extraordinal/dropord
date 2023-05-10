@@ -1,10 +1,10 @@
-# dropord (name is work in progress)
+# DIY Ordinal Inscription collection drop
 
 A btc ordinal inscription "project" platform.
 
-One-click deploy for an on-demand-minting experience. 
+One-click deploy for an on-demand "minting" (inscribing) experience. 
 
-Inspiration from https://bitglyphs.com/ (the service, not the art, but that is cool too). Or something like the Candy Machine contract on Sol.
+Inspiration from https://bitglyphs.com/ (the service, not the art, but that is cool too). Or something like the Candy Machine contract on SOL, or the well developed NFT collection lazy mints on ETH.
 
 # Features
 
@@ -12,6 +12,9 @@ Inspiration from https://bitglyphs.com/ (the service, not the art, but that is c
 * User can buy an inscription.
 * User provides their own recipient address and sends some btc (or any currency?)
 * Magic tubes run in the background checking the funds, inscribing, and sending.
+* Lazy mint, will recieve next availble item in collection.
+
+Todo: Choose which item from collection to mint.
 
 
 ## Front end.
@@ -24,9 +27,14 @@ Inspiration from https://bitglyphs.com/ (the service, not the art, but that is c
 
 ## Backend
 
+Assume these are running:
 * Full bitcoin node (bitcoin-core)
 * Ord index server
+
+This is the brain of the whole operation:
 * Flask server listening and managing transactions.
+
+Probably not necessary or a good idea to have front and backend on same server:
 * Webserver hosting frontend
 
 ## Bonus
@@ -39,13 +47,13 @@ With the same kind of hacky bash scripts tying the backend together, this can be
 # Install bitcoin core
 wget https://bitcoincore.org/bin/bitcoin-core-24.0.1/bitcoin-24.0.1-x86_64-linux-gnu.tar.gz
 tar -xzvf bitcoin-24.0.1-x86_64-linux-gnu.tar.gz
+sudo ln -s bitcoin-24.0.1/bin/bitcoind /usr/bin/bitcoind
+sudo ln -s bitcoin-24.0.1/bin/bitcoin-cli /usr/bin/bitcoin-cli
 
 # Install ord
 curl --proto '=https' --tlsv1.2 -fsLS https://ordinals.com/install.sh | bash -s
 echo "export PATH=$PATH:/home/ubuntu/bin:/home/ubuntu/bitcoin-24.0.1/bin" >> ~/.bashrc
 sudo ln -s ~/bin/ord /usr/bin/ord
-sudo ln -s ~/bitcoin-24.0.1/bin/bitcoind /usr/bin/bitcoind
-sudo ln -s ~/bitcoin-24.0.1/bin/bitcoin-cli /usr/bin/bitcoin-cli
 source ~/.bashrc
 mkdir ~/signet
 echo signet=1 >> ~/siget/bitcoin.conf
@@ -62,14 +70,8 @@ ord --signet --cookie-file /home/ubuntu/signet/signet/.cookie wallet index
 ord --signet --cookie-file /home/ubuntu/signet/signet/.cookie wallet receive
 
 # Install a few other required tools
-sudo apt install jq
-sudo apt install python3-flask
-sudo apt install python3-pip
+sudo apt install -y jq python3-flask python3-pip nginx gunicorn net-tools
 pip install flask_cors
-sudo apt install npm
-npm install http-server
-sudo apt-get install nginx
-sudo apt install gunicorn
 ```
 
 # Configuring the Production server
